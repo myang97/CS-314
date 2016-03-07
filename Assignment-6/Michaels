@@ -1,0 +1,248 @@
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Arrays;
+
+public class LinkedListTester {
+
+    public static void main(String[] args) {
+        //CS314 students. Add your tests here:
+        LinkedList<String> listM = new LinkedList<String>();
+        toStringCheck(listM, "A");
+        toStringCheck(listM, "");
+        toStringCheck(listM, "null");
+        
+        addCheck(listM, "A");
+        addCheck(listM, "B");
+        addCheck(listM, "C");
+        
+        sizeCheck(listM, "", 1);
+        sizeCheck(listM, "123", 2);
+        sizeCheck(listM, "r1", 3);
+        
+        makeEmptyCheck(listM);
+        listM.add("   ");
+        makeEmptyCheck(listM);
+        makeEmptyCheck(listM);
+        
+        listM.add("");
+        listM.add("a");
+        listM.add("c");
+        
+        listM.insert(2, "b");
+        insertCheck(listM, "[, a, b, c]");
+        listM.insert(0, "z");
+        insertCheck(listM, "[z, , a, b, c]");
+        listM.insert(5, "d");
+        insertCheck(listM, "[z, , a, b, c, d]");
+        
+        listM.set(0, "1");
+        setCheck(listM, "[1, , a, b, c, d]");
+        listM.set(1, "2");
+        setCheck(listM, "[1, 2, a, b, c, d]");
+        listM.set(2, "3");
+        setCheck(listM, "[1, 2, 3, b, c, d]");
+        
+        getCheck(listM.get(2), "3");
+        getCheck(listM.get(0), "1");
+        getCheck(listM.get(5), "d");
+        
+        listM.remove(0);
+        removeCheck(listM, "[2, 3, b, c, d]");
+        listM.remove(4);
+        removeCheck(listM, "[2, 3, b, c]");
+        listM.remove(1);
+        removeCheck(listM, "[2, b, c]");
+        
+        listM.addFirst("-3");
+        addFirstCheck(listM, "[-3, 2, b, c]");
+        listM.addFirst("-4");
+        addFirstCheck(listM, "[-4, -3, 2, b, c]");
+        listM.addFirst("-5");
+        addFirstCheck(listM, "[-5, -4, -3, 2, b, c]");
+        
+        listM.removeLast();
+        removeLastCheck(listM, "[-5, -4, -3, 2, b]");
+        listM.removeLast();
+        removeLastCheck(listM, "[-5, -4, -3, 2]");
+        listM.removeLast();
+        removeLastCheck(listM, "[-5, -4, -3]");
+        
+        listM.removeFirst();
+        removeFirstCheck(listM, "[-4, -3]");
+        listM.removeFirst();
+        removeFirstCheck(listM, "[-3]");
+        listM.removeFirst();
+        removeFirstCheck(listM, "[]");
+        
+        listM.add("PI");
+        listM.addLast("3");
+        addLastCheck(listM, "[PI, 3]");
+        listM.addLast("1");
+        addLastCheck(listM, "[PI, 3, 1]");
+        listM.addLast("4");
+        addLastCheck(listM, "[PI, 3, 1, 4]");
+        
+        indexOfCheck(listM.indexOf("TAU"), -1);
+        indexOfCheck(listM.indexOf("PI"), 0);
+        indexOfCheck(listM.indexOf("1"), 2);
+        listM.insert(0, "4");
+        indexOfCheck(listM.indexOf("1", 1), 3);
+        indexOfCheck(listM.indexOf("1", 4), -1);
+        indexOfCheck(listM.indexOf("4", 3), 4);
+        listM.removeFirst();
+        
+        booleanRemoveCheck(listM.remove("PI"), true);
+        booleanRemoveCheck(listM.remove("5"), false);
+        booleanRemoveCheck(listM.remove("9"), false);
+        
+        getSubListCheck(listM.getSubList(0, 3).toString(), "[3, 1, 4]");
+        getSubListCheck(listM.getSubList(0, 2).toString(), "[3, 1]");
+        getSubListCheck(listM.getSubList(2, 2).toString(), "[]");
+        
+        listM.add("1");
+        listM.add("5");
+        listM.add("9");
+        listM.add("2");
+        listM.add("6");
+        listM.add("5");
+        listM.removeRange(6, 9);
+        removeRangeCheck(listM, "[3, 1, 4, 1, 5, 9]");
+        listM.removeRange(1, 2);
+        removeRangeCheck(listM, "[3, 4, 1, 5, 9]");
+        listM.removeRange(0, 2);
+        removeRangeCheck(listM, "[1, 5, 9]");
+        
+        
+        equalsCheck(listM.equals(listM.getSubList(0, 3)), true);
+        equalsCheck(listM.equals(listM.getSubList(0, 1)), false);
+        listM.makeEmpty();
+        equalsCheck(listM.equals(new LinkedList<Integer>()), true);
+    }
+        
+    // MICHAEL's TEST START
+    public static void toStringCheck(LinkedList<String> list, String value){
+        list = new LinkedList<String>();
+        list.add(value);
+        if(list.toString().equals("[" + value + "]"))
+            System.out.println("toStringPassed");
+        else
+            System.out.println("toStringFailed");
+    }
+    
+    public static void addCheck(LinkedList<String> list, String value){
+        list = new LinkedList<String>();
+        list.add(value);
+        if(list.toString().equals("[" + value + "]"))
+            System.out.println("addPassed");
+        else
+            System.out.println("addFailed");
+    }
+    
+    public static void sizeCheck(LinkedList<String> list, String value, int counter){
+        list.add(value);
+        if(list.size() == counter)
+            System.out.println("sizePassed");
+        else
+            System.out.println("sizeFailed");
+    }
+    
+    public static void makeEmptyCheck(LinkedList<String> list){
+        list.makeEmpty();
+        if(list.toString().equals("[]"))
+            System.out.println("makeEmptyPassed");
+        else
+            System.out.println("makeEmptyFailed");
+    }
+    
+    public static void insertCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("insertPassed");
+        else
+            System.out.println("insertFailed");
+    }
+    
+    public static void setCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("setPassed");
+        else
+            System.out.println("setFailed");
+    }
+    public static void getCheck(String got, String check){
+        if(got.equals(check))
+            System.out.println("getPassed");
+        else
+            System.out.println("getFailed");
+    }
+    
+    public static void removeCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("removePassed");
+        else
+            System.out.println("removeFailed");
+    }
+    
+    public static void removeFirstCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("removeFirstPassed");
+        else
+            System.out.println("removeFirstFailed");
+    }
+    
+    public static void addFirstCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("addFirstPassed");
+        else
+            System.out.println("addFirstFailed");
+    }
+    
+    public static void addLastCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("addLastPassed");
+        else
+            System.out.println("addLastFailed");
+    }
+    
+    public static void removeLastCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("removeLastPassed");
+        else
+            System.out.println("removeLastFailed");
+    }
+    
+    public static void indexOfCheck(int actual, int expected){
+        if(actual == expected)
+            System.out.println("indexOfPassed");
+        else
+            System.out.println("indexOfFailed");
+    }
+    
+    public static void booleanRemoveCheck(boolean actual, boolean expected){
+        if(actual == expected)
+            System.out.println("booleanRemovePassed");
+        else
+            System.out.println("booleanRemoveFailed");
+    }
+    
+    public static void getSubListCheck(String list, String check){
+        if(list.equals(check))
+            System.out.println("getSubListPassed");
+        else
+            System.out.println("getSubListFailed");
+    }
+    
+    public static void removeRangeCheck(LinkedList<String> list, String check){
+        if(list.toString().equals(check))
+            System.out.println("removeRangePassed");
+        else
+            System.out.println("removeRangeFailed");
+    }
+    
+    public static void equalsCheck(boolean actual, boolean expected){
+        if(actual == expected)
+            System.out.println("equalsCheckPassed");
+        else
+            System.out.println("equalsCheckFailed");
+    }
+    // MICHAEL'S TEST END
+}
